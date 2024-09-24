@@ -1,4 +1,5 @@
 
+const { Op } = require("sequelize")
 const Users = require("../models/Users")
 
 
@@ -26,8 +27,26 @@ const createUser = async (req, res) => {
 
 // Read All User
 const readAllUser = async (req, res) => {
+    const {search, orderBy, sortBy, limit, page} = req.query
+    const offset = (page - 1) * limit
+    let where = {}
+    let order = []
+
+    if (search) {
+        where = {
+            username : { [Op.iLike]: "%" + search + "%" }
+        }
+    }
+    if (orderBy && sortBy) {
+        order = [[orderBy, `${sortBy}`]];
+    }
     try {
-        const data = await Users.findAll()
+        const data = await Users.findAll({
+            where,
+            order,
+            limit,
+            offset
+        })
         res.status(200).json({
             msg : 'Success find all Users',
             data
