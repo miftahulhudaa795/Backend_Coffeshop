@@ -1,5 +1,7 @@
 const { DataTypes } = require("sequelize");
 const db = require("../config/db");
+const Users = require("./Users");
+const Products = require("./Products");
 
 
 
@@ -11,28 +13,22 @@ const Transactions = db.define('Transactions', {
         allowNull : false,
         primaryKey : true
     },
-    productName : {
-        type : DataTypes.STRING
-    },
-    unitPrice : {
+    user_id : {
         type : DataTypes.INTEGER
     },
-    quantity : {
+    product_id : {
         type : DataTypes.INTEGER
     },
-    subtotal : {
+    payment_method : {
         type : DataTypes.INTEGER
     },
-    taxAndFees : {
+    delivery_cost : {
         type : DataTypes.INTEGER
     },
-    total : {
+    amount : {
         type : DataTypes.INTEGER
     },
-    addressDetails : {
-        type : DataTypes.STRING
-    },
-    paymentMethod : {
+    status : {
         type : DataTypes.STRING
     }
 }, {
@@ -41,3 +37,9 @@ const Transactions = db.define('Transactions', {
 
 
 module.exports = Transactions
+
+
+Transactions.belongsTo(Users, {foreignKey : 'user_id', as : 'user'})
+Transactions.belongsTo(Products, {foreignKey : 'product_id', as : 'product'})
+Users.hasMany(Transactions, {foreignKey : 'id'})
+Products.hasMany(Transactions, {foreignKey : 'id'})

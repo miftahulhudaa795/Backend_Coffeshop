@@ -3,16 +3,16 @@ const Products = require("../models/Products");
 
 // Create Product
 const createProduct = async (req, res) => {
-  try {
+  try { 
     const { name, stock, price, description, size, category } = req.body;
 
-    const image = req.file ? req.file?.path : null;
+    const file = req.file ? req.file?.path : null;
 
     const data = await Products.create({
       name,
       stock,
       price,
-      image,
+      image : file,
       description,
       size,
       category

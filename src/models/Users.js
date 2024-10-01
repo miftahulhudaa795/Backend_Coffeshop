@@ -19,6 +19,9 @@ const Users = db.define ('Users', {
     },
     password : {
         type : DataTypes.STRING
+    },
+    role : {
+        type : DataTypes.STRING
     } 
 }, {
     timestamps : true

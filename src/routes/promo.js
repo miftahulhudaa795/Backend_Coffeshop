@@ -1,15 +1,16 @@
 const { createPromo, readAllPromo, readOnePromo, updatePromo, deletePromo } = require('../controllers/promo')
 const upload = require('../middleware/upload')
+const { verifyAdmin } = require('../middleware/verifyToken')
 
 
 
 const promoRouter = require('express').Router()
 
 promoRouter
-        .post (`/`, upload.single ('image'), createPromo)
+        .post (`/`, verifyAdmin, upload.single ('image'), createPromo)
         .get (`/`, readAllPromo)
         .get(`/:id`, readOnePromo)
-        .patch (`/:id`, upload.single ('image'), updatePromo)
-        .delete (`/:id`, deletePromo)
+        .patch (`/:id`, verifyAdmin, upload.single ('image'), updatePromo)
+        .delete (`/:id`, verifyAdmin, deletePromo)
 
 module.exports = promoRouter

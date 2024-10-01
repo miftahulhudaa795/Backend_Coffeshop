@@ -1,13 +1,14 @@
-const { createTransaction, readAllTransaction, readOneTransaction, updateTransaction, deleteTransaction } = require('../controllers/transaction')
+const { createTransaction, updateTransaction, deleteTransaction, findAllTransaction, findOneTransaction } = require('../controllers/transaction')
+const { verifyToken } = require('../middleware/verifyToken')
 
 
 
 const transactionRouter = require('express').Router()
 
 
-transactionRouter.post (`/`, createTransaction)
-transactionRouter.get (`/`, readAllTransaction)
-transactionRouter.get (`/:id`, readOneTransaction)
+transactionRouter.post (`/`, verifyToken, createTransaction)
+transactionRouter.get (`/`, findAllTransaction)
+transactionRouter.get (`/:id`, findOneTransaction)
 transactionRouter.patch (`/:id`, updateTransaction)
 transactionRouter.delete (`/:id`, deleteTransaction)
 
