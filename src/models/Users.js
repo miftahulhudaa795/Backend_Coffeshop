@@ -10,7 +10,7 @@ const Users = db.define ('Users', {
         allowNull : false,
         primaryKey : true
     },
-    username : {
+    name : {
         type : DataTypes.STRING
     },
     email : {
@@ -18,6 +18,16 @@ const Users = db.define ('Users', {
         
     },
     password : {
+        type : DataTypes.STRING
+    },
+    phoneNumber : {
+        type : DataTypes.STRING
+    },
+    image : {
+        type : DataTypes.STRING,
+        defaultValue : ""
+    },
+    address : {
         type : DataTypes.STRING
     },
     role : {

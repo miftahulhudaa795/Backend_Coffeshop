@@ -65,7 +65,7 @@ const findAllTransaction = async (req, res) => {
         {
           model: Users,
           as: "user",
-          attributes: ["username", "email", "role"],
+          attributes: ["name", "email", "role"],
         },
       ],
     });

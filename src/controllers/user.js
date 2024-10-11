@@ -7,11 +7,15 @@ const Users = require("../models/Users")
 // Create User
 const createUser = async (req, res) => {
     try {
-        const {username, email, password} = req.body
+        const {name, email, password, phoneNumber, address} = req.body
+        const file = req.file ? req.file?.path : null;
         const data = await Users.create ({
-            username,
+            name,
             email,
-            password
+            password,
+            phoneNumber,
+            address,
+            image : file
         })
         res.status (201).json({
             msg : 'Success Create User', data
@@ -34,7 +38,7 @@ const readAllUser = async (req, res) => {
 
     if (search) {
         where = {
-            username : { [Op.iLike]: "%" + search + "%" }
+            email : { [Op.iLike]: "%" + search + "%" }
         }
     }
     if (orderBy && sortBy) {
@@ -60,7 +64,7 @@ const readAllUser = async (req, res) => {
 // Read One User
 const readOneUser = async (req, res) => {
     try {
-        const {id} = req.params
+        const {id} = req.payload
         const dataUser = await Users.findByPk(id)
         if (!dataUser){
             return res.status(404).json({msg : `User Not Found`, dataUser})
@@ -79,12 +83,26 @@ const readOneUser = async (req, res) => {
 const updateUser = async (req, res) => {
     try {
         const {id} = req.params
-        const {username, email, password} = req.body
+        const {name, email, password, phoneNumber, address} = req.body
         const user = await Users.findByPk(id)
         if (!user){
             return res.status(404).json({msg : `User Not Found`})
         }
-        await user.update({username, email, password})
+        if (req.file) {
+            await user.update({
+                name,
+                email,
+                password,
+                phoneNumber,
+                address,
+                image : req?.file?.path
+            })
+            return res.status(200).json({
+                msg :'Success Update User with image',
+                data : user
+            })
+        }
+        await user.update({name, email, password, phoneNumber, address})
         await user.save()
         res.status(200).json({
             msg : 'Success Update User',

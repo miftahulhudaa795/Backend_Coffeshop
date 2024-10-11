@@ -3,18 +3,28 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 
+
 const register = async (req, res) => {
     try {
-        const {username, email, password : userPassword} = req.body
+        const {name, email, password : userPassword, phoneNumber} = req.body
+
+        console.log(email, name, userPassword, phoneNumber);
+        const existUser = await Users.findOne({where: {email}})
+        
+        if (existUser) {
+            return res.status(400).json({msg: 'User has ben registered'})
+        }
+        
         const salt = await bcrypt.genSalt()
         const encryptPassword = await bcrypt.hash(userPassword, salt)
         const data = await Users.create ({
-            username,
+            name,
             email,
             password : encryptPassword,
+            phoneNumber,
             role : 'user'
         })
-        res.status(201).json({msg : 'Success Register User'})
+        res.status(201).json({msg : 'Success Register User', data})
     } catch (error) {
         console.log(error);
         res.status(500).json({msg : 'Internal Server Error', error})
