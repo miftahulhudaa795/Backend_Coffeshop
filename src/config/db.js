@@ -9,4 +9,5 @@ const db = new Sequelize(`${process.env.DATABASE_URL}`, {
     dialectModule : pg
 })
 
+
 module.exports = db

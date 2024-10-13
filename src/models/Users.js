@@ -30,6 +30,21 @@ const Users = db.define ('Users', {
     address : {
         type : DataTypes.STRING
     },
+    displayName : {
+        type : DataTypes.STRING
+    },
+    firstName : {
+        type : DataTypes.STRING
+    },
+    lastName : {
+        type : DataTypes.STRING
+    },
+    dateOfBirth : {
+        type : DataTypes.DATE
+    },
+    gender : {
+        type : DataTypes.STRING
+    },
     role : {
         type : DataTypes.STRING
     } 

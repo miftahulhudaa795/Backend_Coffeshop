@@ -7,7 +7,7 @@ const Users = require("../models/Users")
 // Create User
 const createUser = async (req, res) => {
     try {
-        const {name, email, password, phoneNumber, address} = req.body
+        const {name, email, password, phoneNumber, address, displayName, firstName, lastName, dateOfBirth, gender} = req.body
         const file = req.file ? req.file?.path : null;
         const data = await Users.create ({
             name,
@@ -15,6 +15,11 @@ const createUser = async (req, res) => {
             password,
             phoneNumber,
             address,
+            displayName,
+            firstName,
+            lastName,
+            dateOfBirth,
+            gender,
             image : file
         })
         res.status (201).json({
@@ -83,7 +88,7 @@ const readOneUser = async (req, res) => {
 const updateUser = async (req, res) => {
     try {
         const {id} = req.params
-        const {name, email, password, phoneNumber, address} = req.body
+        const {name, email, password, phoneNumber, address, displayName, firstName, lastName, dateOfBirth, gender} = req.body
         const user = await Users.findByPk(id)
         if (!user){
             return res.status(404).json({msg : `User Not Found`})
@@ -95,6 +100,11 @@ const updateUser = async (req, res) => {
                 password,
                 phoneNumber,
                 address,
+                displayName,
+                firstName,
+                lastName,
+                dateOfBirth,
+                gender,
                 image : req?.file?.path
             })
             return res.status(200).json({
@@ -102,7 +112,7 @@ const updateUser = async (req, res) => {
                 data : user
             })
         }
-        await user.update({name, email, password, phoneNumber, address})
+        await user.update({name, email, password, phoneNumber, address, displayName, firstName, lastName, dateOfBirth, gender})
         await user.save()
         res.status(200).json({
             msg : 'Success Update User',
